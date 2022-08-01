@@ -11,6 +11,7 @@ import myhome.accountbook.service.statistic.ContentStatisticService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/book")
@@ -40,7 +41,7 @@ public class ContentController {
 
     @GetMapping("/content/statistic")
     public Result<?> statistic(ContentSearchDto contentSearchDto){
-        ContentStatisticDto result = contentStatisticService.contentStatistic(contentSearchDto);
+        Map<String, List<ContentStatisticDto>> result = contentStatisticService.contentStatistic(contentSearchDto);
         return new Result<>(result);
     }
 }

@@ -39,7 +39,7 @@ public class ContentSearchService {
 
         return contents.stream().map(content -> {
             ContentDto dto = modelMapper.map(content, ContentDto.class);
-            CategoryDto category = CategoryUtils.getMyCategory(dto.getType() + dto.getCategory1() + dto.getCategory2());
+            CategoryDto category = CategoryUtils.getMyCategory(CategoryUtils.generateKey(dto.getType(), dto.getCategory1(), dto.getCategory2()));
 
             if(category != null){
                 dto.setCategory1(category.getName());

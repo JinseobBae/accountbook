@@ -30,7 +30,7 @@ public class SimpleCategoryCache {
     void init(){
         List<Category> list = categoryRepository.findAll();
         list.forEach(category -> {
-            String key = category.getType() + category.getCode() + category.getSubCode();
+            String key = category.getType() + "|" + category.getCode() + "|" + category.getSubCode();
             CategoryDto value = CategoryDto.builder()
                                     .name(category.getName())
                                     .subName(category.getSubName())
