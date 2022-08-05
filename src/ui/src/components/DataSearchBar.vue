@@ -36,6 +36,9 @@
         사용일자 : <input type="date" v-model="searchData.startDate" placeholder=""/> ~ <input type="date" v-model="searchData.endDate" placeholder=""/>
       </span>
       <span>
+        <button type="button" @click="cleanSearch">초기화</button>
+      </span>
+      <span>
         <button type="submit">검색</button>
       </span>
     </form>
@@ -115,6 +118,10 @@ export default {
       })
 
       return isDup
+    },
+
+    cleanSearch(){
+      this.$emit("clean")
     }
 
   }

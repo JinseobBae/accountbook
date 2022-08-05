@@ -34,7 +34,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 20px;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 
 .vnb__menu-options__option__link{

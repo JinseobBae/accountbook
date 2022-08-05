@@ -6,7 +6,7 @@
       </div>
 
       <div class="search_bar_container">
-        <DataSearchBar @search="searchData"/>
+        <DataSearchBar @search="searchData" @clean="cleanSearch"/>
       </div>
 
       <div id="dataTable">
@@ -20,7 +20,7 @@
     </div>
 
     <div>
-      <SimpleStatistic ref="statistic"/>
+      <SimpleStatistic v-show="showStatistic" ref="statistic"/>
     </div>
 
     <Modal v-if="showModal" @close-modal="showModal = false" >
@@ -39,7 +39,7 @@ import Modal from "@/components/Modal";
 import AddData from "@/components/AddData";
 import {findBookByName} from "@/api/AccountBookApi";
 import DataSearchBar from "@/components/DataSearchBar";
-import SimpleStatistic from "@/components/SimpleStatistic";
+import SimpleStatistic from "@/components/statistic/SimpleStatistic";
 
 export default {
   name: "AccountBook",
@@ -53,6 +53,7 @@ export default {
   data(){
     return {
       showModal: false,
+      showStatistic : false,
       bookName: '집',
       totalAmount: '0'
     }
@@ -71,9 +72,13 @@ export default {
     },
 
     searchData(formData){
-      console.log(formData)
+      this.showStatistic = true
       this.$refs.dataTable.search(formData)
       this.$refs.statistic.doStatistic(formData)
+    },
+
+    cleanSearch(){
+      this.showStatistic = false
     }
   },
 
