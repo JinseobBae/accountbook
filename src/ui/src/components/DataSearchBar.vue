@@ -100,6 +100,7 @@ export default {
     categoryChanged(){
       this.category2Disabled = false;
       this.category2List = []
+      this.searchData.category2 = undefined;
 
       this.originCategory2List.forEach((oc2) => {
         if((oc2.type + '||' + oc2.code) === (this.searchData.type + '||' + this.searchData.category1)){
@@ -121,6 +122,7 @@ export default {
     },
 
     cleanSearch(){
+      this.searchData = {}
       this.$emit("clean")
     }
 
