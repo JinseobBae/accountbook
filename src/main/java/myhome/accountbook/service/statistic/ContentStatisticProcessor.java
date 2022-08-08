@@ -4,13 +4,14 @@ import lombok.Getter;
 import myhome.accountbook.common.AmountType;
 import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.dto.ContentStatisticDto;
-import myhome.accountbook.entity.Category;
 import myhome.accountbook.entity.Content;
 import myhome.accountbook.util.CategoryUtils;
 
 import java.util.*;
-import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
+
+import static myhome.accountbook.util.StatisticUtils.sortResult;
+import static myhome.accountbook.util.StatisticUtils.toLong;
 
 public class ContentStatisticProcessor {
 
@@ -41,7 +42,7 @@ public class ContentStatisticProcessor {
             resultList.add(statisticDto);
         });
 
-        return resultList;
+        return sortResult.apply(resultList);
     }
 
     @Getter
@@ -97,7 +98,7 @@ public class ContentStatisticProcessor {
             resultList.add(content);
         });
 
-        return resultList;
+        return sortResult.apply(resultList);
     }
 
     @Getter
@@ -161,17 +162,8 @@ public class ContentStatisticProcessor {
             resultList.add(content);
         });
 
-        return resultList;
+        return sortResult.apply(resultList);
     }
 
-    private final ToLongFunction<Content> toLong = (content) -> {
-        Long result;
-        if (content.getType().equals("1")) {
-            result = -(content.getAmount());
-        } else {
-            result = content.getAmount();
-        }
 
-        return result;
-    };
 }
