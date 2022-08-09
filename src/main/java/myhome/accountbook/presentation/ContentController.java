@@ -24,9 +24,8 @@ public class ContentController {
 
 
     @GetMapping("/content")
-    public Result<List<ContentDto>> searchContent(ContentSearchDto contentSearchDto){
-        List<ContentDto> resultList = contentSearchService.searchAllContent(contentSearchDto);
-        return new Result<>(resultList, resultList.size());
+    public List<ContentDto> searchContent(ContentSearchDto contentSearchDto){
+        return contentSearchService.searchAllContent(contentSearchDto);
     }
 
     @PostMapping("/content")
@@ -40,8 +39,7 @@ public class ContentController {
     }
 
     @GetMapping("/content/statistic")
-    public Result<?> statistic(ContentSearchDto contentSearchDto){
-        Map<String, List<ContentStatisticDto>> result = contentStatisticService.contentStatistic(contentSearchDto);
-        return new Result<>(result);
+    public Map<String, List<ContentStatisticDto>> statistic(ContentSearchDto contentSearchDto){
+        return contentStatisticService.contentStatistic(contentSearchDto);
     }
 }

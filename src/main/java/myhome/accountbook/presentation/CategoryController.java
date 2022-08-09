@@ -1,7 +1,6 @@
 package myhome.accountbook.presentation;
 
 import lombok.RequiredArgsConstructor;
-import myhome.accountbook.common.Result;
 import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.service.CategorySearchService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +17,8 @@ public class CategoryController {
     private final CategorySearchService categorySearchService;
 
     @GetMapping("category")
-    public Result<List<CategoryDto>> searchCategory(){
-        List<CategoryDto> resultList = categorySearchService.searchCategory();
-
-
-        return new Result<>(resultList);
+    public List<CategoryDto> searchCategory(){
+        return categorySearchService.searchCategory();
     }
 
 }
