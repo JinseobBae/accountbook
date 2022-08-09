@@ -1,12 +1,14 @@
 <template>
   <div id="simple_stat_container">
-    총 금액 :  {{totalAmount}}
+    <div id="total_amount_statistic">
+      총 금액 :  {{totalAmount}}
+    </div>
     <div class="pie_chart_container">
       <span>
-        <PieChart chart-id="c1" :chart-data="typeStatisticData"/>
+        <PieChart chart-id="c1" :chart-data="typeStatisticData" v-show="showTypeChart"/>
       </span>
       <span>
-        <PieChart chart-id="c2" :chart-data="category1StatisticData"/>
+        <PieChart chart-id="c2" :chart-data="category1StatisticData" v-show="showCategory1Chart"/>
       </span>
       <span>
         <PieChart chart-id="c3" :chart-data="category2StatisticData"/>
@@ -18,7 +20,7 @@
 <script>
 import { getContentStatistic } from "@/api/ContentStatisticApi"
 import { setComma } from "@/common/CommonJs"
-import PieChart from "@/components/statistic/PieChart";
+import PieChart from "@/components/chart/PieChart";
 
 export default {
   //https://vue-chartjs.org/guide/#introduction
@@ -29,7 +31,9 @@ export default {
       totalAmount: 0,
       typeStatisticData: {},
       category1StatisticData: {},
-      category2StatisticData: {}
+      category2StatisticData: {},
+      showTypeChart: true,
+      showCategory1Chart: true,
     }
   },
   methods: {
@@ -41,6 +45,15 @@ export default {
         this.typeStatisticData = this.generateCharData(statisticData.typeStatistic)
         this.category1StatisticData = this.generateCharData(statisticData.category1Statistic)
         this.category2StatisticData = this.generateCharData(statisticData.category2Statistic)
+
+        console.log(formData.type)
+        console.log(formData.category1)
+        if (formData.category1 !== undefined){
+          this.showTypeChart = false
+          this.showCategory1Chart = false
+        }else if(formData.type !== undefined){
+          this.showTypeChart = false
+        }
       })
     },
 
@@ -65,7 +78,10 @@ export default {
         labels: labels,
         datasets: [
           {
-            backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+            backgroundColor: [
+                '#41B883', '#E46651', '#00D8FF', '#DD1B16'
+              , '#7442e5', '#b4a9a9', '#debf76', '#16dd70'
+              , '#2a6dde', '#e7791d'],
             data: chartData
           }
         ]
@@ -83,5 +99,10 @@ export default {
   .pie_chart_container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+  }
+
+  #total_amount_statistic {
+    font-size: 3vw;
   }
 </style>

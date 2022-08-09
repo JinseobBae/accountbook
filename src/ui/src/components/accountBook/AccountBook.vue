@@ -34,11 +34,11 @@
 <script>
 
 
-import DataTable from "@/components/AccountBookDataTable";
+import DataTable from "@/components/accountBook/AccountBookDataTable";
 import Modal from "@/components/Modal";
-import AddData from "@/components/AddData";
+import AddData from "@/components/accountBook/AddData";
 import {findBookByName} from "@/api/AccountBookApi";
-import DataSearchBar from "@/components/DataSearchBar";
+import DataSearchBar from "@/components/accountBook/DataSearchBar";
 import SimpleStatistic from "@/components/statistic/SimpleStatistic";
 
 export default {
@@ -46,9 +46,9 @@ export default {
   components: {
     SimpleStatistic,
     DataSearchBar,
-    DataTable
-    ,Modal
-    ,AddData
+    DataTable,
+    Modal,
+    AddData
   },
   data(){
     return {

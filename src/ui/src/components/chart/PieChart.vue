@@ -56,7 +56,7 @@ export default {
     styles: {
       type: Object,
       default: () => { return {
-        width: '400px',
+        width: '20vw',
         height: `300px`,
         position: 'relative'
       }}
