@@ -31,7 +31,7 @@ public class TotalStatisticService {
                 .orElseThrow(() -> new RuntimeException("Accountbook not exist"));
 
         DateDto thisMonth = getDateInfo(LocalDate.now());
-        DateDto lastMonth = getDateInfo(LocalDate.now().minusMonths(2));
+        DateDto lastMonth = getDateInfo(LocalDate.now().minusMonths(6));
 
         contentSearchDto.setStartDate(lastMonth.getFirstDayAsString());
         contentSearchDto.setEndDate(thisMonth.getLastDayAsString());
