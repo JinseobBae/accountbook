@@ -42,21 +42,34 @@ export default {
     },
     styles: {
       type: Object,
-      default: () => {}
+      default: () => { return {
+        width: '27vw',
+        height: `35vh`,
+        position: 'relative'
+      }}
     },
     plugins: {
       type: Object,
       default: () => {}
+    },
+    chartData: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
-      chartData: {
-        labels: [ 'January', 'February', 'March' ],
-        datasets: [ { data: [40, 20, 12] } ]
-      },
       chartOptions: {
-        responsive: true
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            stacked: true
+          }
+        }
       }
     }
   },

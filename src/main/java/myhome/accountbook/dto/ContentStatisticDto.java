@@ -1,10 +1,11 @@
 package myhome.accountbook.dto;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContentStatisticDto {
