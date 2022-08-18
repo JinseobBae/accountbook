@@ -22,4 +22,8 @@ public class StatisticController {
         return totalStatisticService.compareTotalAmountWithLastMonth(contentSearchDto);
     }
 
+    @GetMapping("/with-last-month-detail")
+    public List<TotalStatisticDto> compareLastMonthDetail(ContentSearchDto contentSearchDto){
+        return totalStatisticService.compareTotalAmountWithLastMonthDetail(contentSearchDto);
+    }
 }

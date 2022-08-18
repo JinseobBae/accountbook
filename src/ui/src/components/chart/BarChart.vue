@@ -43,8 +43,8 @@ export default {
     styles: {
       type: Object,
       default: () => { return {
-        width: '27vw',
-        height: `35vh`,
+        width: '35vw',
+        height: '50vh',
         position: 'relative'
       }}
     },
@@ -55,6 +55,14 @@ export default {
     chartData: {
       type: Object,
       required: true
+    },
+    title: {
+      type: String,
+      default: ""
+    },
+    stack: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -64,10 +72,16 @@ export default {
         maintainAspectRatio: false,
         scales: {
           x: {
-            stacked: true
+            stacked: this.stack
           },
           y: {
-            stacked: true
+            stacked: this.stack
+          }
+        },
+        plugins: {
+          title: {
+            display: this.title !== "",
+            text: this.title
           }
         }
       }

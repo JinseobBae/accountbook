@@ -64,13 +64,23 @@ export default {
     chartData: {
       type: Object,
       required: true
+    },
+    title: {
+      type: String,
+      default: ""
     }
   },
   data() {
     return {
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: this.title !== "",
+            text: this.title
+          }
+        }
       }
     }
   },

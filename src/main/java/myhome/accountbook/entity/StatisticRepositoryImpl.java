@@ -42,4 +42,28 @@ public class StatisticRepositoryImpl implements StatisticRepository{
                 .fetch();
 
     }
+
+    @Override
+    public List<TotalStatisticDto> findTotalByMonthDetail(ContentSearchDto contentSearchDto, AccountBook accountBook) {
+        QContent content = QContent.content;
+
+        StringTemplate dateFormat = Expressions.stringTemplate("TO_CHAR({0}, '{1s}')", content.realUseDt, "YYYY-MM");
+
+        return jpaQueryFactory.select(Projections.fields(TotalStatisticDto.class,
+                content.category1,
+                content.category2,
+                content.amount.sum().as("totalAmount"),
+                dateFormat.as("label"))
+        )
+                .from(content)
+                .where(content.accountBook.eq(accountBook))
+                .where(content.type.eq("1"))
+                .where(content.realUseDt.between(LocalDate.parse(contentSearchDto.getStartDate()), LocalDate.parse(contentSearchDto.getEndDate())))
+                .groupBy(dateFormat)
+                .groupBy(content.category1)
+                .groupBy(content.category2)
+                .orderBy(dateFormat.asc())
+                .fetch();
+
+    }
 }

@@ -9,4 +9,8 @@ import java.util.List;
 public interface StatisticRepository {
 
     List<TotalStatisticDto> findTotalByMonth(ContentSearchDto contentSearchDto, AccountBook accountBook);
+
+    List<TotalStatisticDto> findTotalByMonthDetail(ContentSearchDto contentSearchDto, AccountBook accountBook);
+
+
 }

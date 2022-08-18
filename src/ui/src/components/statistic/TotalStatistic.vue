@@ -1,69 +1,66 @@
 <template>
-<div>
-  <BarChart :chart-data="lastMonthCompareData"/>
+<div id="total-chart-container">
+  <div id="month-compare-chart-container">
+    <span>
+      <BarChart chart-id="mb" :chart-data="lastMonthCompareData" title="최근 6개월간 사용 총액"/>
+    </span>
+    <span>
+      <BarChart chart-id="mdb" :stack=true :chart-data="lastMonthCompareDataDetail" title="최근 6개월간 항목별 사용 총액"/>
+    </span>
+  </div>
+  <div>
+    asdfasdf
+  </div>
+  <div>
+    asdfasdf
+  </div>
 </div>
 </template>
 
 <script>
 import BarChart from "@/components/chart/BarChart";
-import { getLastMonthCompare } from "@/api/TotalStatisticApi"
+import { getLastMonthCompare, getLastMonthCompareDetail } from "@/api/TotalStatisticApi"
+import { genMonthlyBarCharData, genMonthlyBarCharDataDetail } from "@/script/TotalStatisticScript"
 
 export default {
   name: "TotalStatistic",
   components: {BarChart},
   data() {
     return{
-      lastMonthCompareData: {}
+      lastMonthCompareData: {},
+      lastMonthCompareDataDetail: {}
     }
   },
   mounted() {
-    getLastMonthCompare({accountBookName : "집"}).then((response) => {
+    const searchForm = { accountBookName : "집" }
+
+    getLastMonthCompare(searchForm).then((response) => {
       const data = response.body;
+      this.lastMonthCompareData = genMonthlyBarCharData(data)
+    })
 
-      this.lastMonthCompareData = this.generateBarCharData(data)
-
+    getLastMonthCompareDetail(searchForm).then((response) => {
+      const data = response.body;
+      this.lastMonthCompareDataDetail = genMonthlyBarCharDataDetail(data)
     })
   },
-
-  methods: {
-    generateBarCharData(data){
-
-      console.log(data)
-
-      const labels = []
-      const chartData = []
-      let dataLabel = ''
-
-
-
-      data.forEach( (d) => {
-        labels.push(d.label)
-        chartData.push(d.totalAmount)
-
-        if(dataLabel === ''){
-          if(d.type === null){
-            dataLabel = '사용금액'
-          }else{
-            dataLabel = d.type
-          }
-        }
-      })
-
-      return {
-        labels: labels,
-        datasets: [
-          {
-            label: dataLabel,
-            backgroundColor: ['#41B883'],
-            data: chartData
-          },
-        ]
-      }
-    }
-  }
 }
 </script>
 
 <style scoped>
+
+#total-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#month-compare-chart-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
 
 </style>

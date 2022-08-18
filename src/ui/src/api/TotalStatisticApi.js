@@ -10,6 +10,16 @@ const getLastMonthCompare = (searchFormData) => {
     })
 }
 
+const getLastMonthCompareDetail = (searchFormData) => {
+    return axios.get('statistic/with-last-month-detail', {
+        params : searchFormData
+    }).then( response => {
+        return response.data
+    }).catch( error => {
+        alert(error.response.data.message)
+    })
+}
+
 export {
-    getLastMonthCompare
+    getLastMonthCompare, getLastMonthCompareDetail
 }
