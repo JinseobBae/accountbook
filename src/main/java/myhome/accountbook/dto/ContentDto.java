@@ -73,4 +73,10 @@ public class ContentDto {
                 .build();
     }
 
+    public void changeNameToCode(String type, String category1, String category2){
+        this.type = type;
+        this.category1 = category1;
+        this.category2 = category2;
+    }
+
 }

@@ -1,9 +1,12 @@
 package myhome.accountbook.excel;
 
 import lombok.RequiredArgsConstructor;
+import myhome.accountbook.config.SimpleCategoryCache;
+import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.dto.ContentDto;
 import myhome.accountbook.entity.Content;
 import myhome.accountbook.entity.ContentRepository;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -42,20 +45,27 @@ public class ExcelReadService {
 
             int lastNum = sheet.getPhysicalNumberOfRows();
 
+            SimpleCategoryCache categoryCache = SimpleCategoryCache.getInstance();
+
             for (rowNum = 0; rowNum < lastNum; rowNum++) {
                 XSSFRow row = sheet.getRow(rowNum);
 
                 if (row != null) {
-                    list.add(ContentDto.builder()
-                            .type(row.getCell(cellIndex++).getRawValue() + "")
-                            .amount(Integer.parseInt(row.getCell(cellIndex++).getRawValue() + ""))
+                    ContentDto contentDto = ContentDto.builder()
+                            .type(row.getCell(cellIndex++).getStringCellValue())
+                            .amount(Math.abs(Integer.parseInt(row.getCell(cellIndex++).getRawValue() + "")))
                             .title(row.getCell(cellIndex++).getStringCellValue())
-                            .note(row.getCell(cellIndex++).getStringCellValue())
+                            .note(getNote(row.getCell(cellIndex++)))
                             .realUseDt(stringToLocalDate(row.getCell(cellIndex++).getStringCellValue()))
                             .category1(row.getCell(cellIndex++).getStringCellValue())
                             .category2(row.getCell(cellIndex).getStringCellValue())
-                            .build());
+                            .build();
 
+                    CategoryDto categoryDto = categoryCache.getCategoryByName(contentDto.getType(), contentDto.getCategory1(), contentDto.getCategory2());
+
+                    contentDto.changeNameToCode(categoryDto.getType(), categoryDto.getCode(), categoryDto.getSubCode());
+
+                    list.add(contentDto);
                 }
 
                 cellIndex = 0;
@@ -64,6 +74,8 @@ public class ExcelReadService {
             fileNotFoundException.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException npe){
+            npe.printStackTrace();
         }
 
 
@@ -81,5 +93,21 @@ public class ExcelReadService {
         int[] intDate = Arrays.stream(splitDate).mapToInt(Integer::parseInt).toArray();
 
         return LocalDate.of(intDate[0], intDate[1], intDate[2]);
+    }
+
+    private String convertType(String value){
+        if(value.equals("출금")){
+            return "1";
+        }else{
+            return "0";
+        }
+    }
+
+    private String getNote(XSSFCell cell){
+        if(cell != null){
+            return cell.getStringCellValue();
+        }else{
+            return "";
+        }
     }
 }

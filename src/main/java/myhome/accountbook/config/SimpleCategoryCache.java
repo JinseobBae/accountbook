@@ -1,5 +1,6 @@
 package myhome.accountbook.config;
 
+import lombok.extern.log4j.Log4j;
 import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.entity.Category;
 import myhome.accountbook.entity.CategoryRepository;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 @Component
 public class SimpleCategoryCache {
@@ -32,9 +35,12 @@ public class SimpleCategoryCache {
         list.forEach(category -> {
             String key = category.getType() + "|" + category.getCode() + "|" + category.getSubCode();
             CategoryDto value = CategoryDto.builder()
-                                    .name(category.getName())
-                                    .subName(category.getSubName())
-                                    .build();
+                    .name(category.getName())
+                    .code(category.getCode())
+                    .subName(category.getSubName())
+                    .subCode(category.getSubCode())
+                    .type(category.getType())
+                    .build();
 
             cache.put(key, value);
         });
@@ -44,6 +50,22 @@ public class SimpleCategoryCache {
 
     public CategoryDto getCategory(String key){
         return cache.get(key);
+    }
+
+    public CategoryDto getCategoryByName(String typeName, String category1Name, String category2Name){
+        String type = typeName.equals("입금") ? "0" : "1";
+
+        return cache.values().stream()
+                .filter(categoryDto -> categoryDto.getType().equals(type))
+                .filter(categoryDto -> categoryDto.getName().equals(category1Name))
+                .filter(categoryDto -> categoryDto.getSubName().equals(category2Name))
+                .findAny()
+                .orElseThrow( () -> {
+                    System.out.println(type);
+                    System.out.println(category1Name);
+                    System.out.println(category2Name);
+                    return new RuntimeException("존재하지 않는 카테고리입니다.");
+                });
     }
 }
 

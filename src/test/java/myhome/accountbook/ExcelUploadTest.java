@@ -14,7 +14,7 @@ class ExcelUploadTest {
 
     @Test
     void excelReadTest(){
-        String path = "C:/Users/jinseob/Desktop/used.xlsx";
+        String path = "C:/Users/jinseob/Desktop/10월거래내역.xlsx";
         excelReadService.read(path);
     }
 
