@@ -26,5 +26,5 @@ export default [
 ];
 
 const setComma = (number) => {
-    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+    return Number(number).toLocaleString('ko-KR')
 }

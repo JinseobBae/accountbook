@@ -85,7 +85,7 @@ export default {
   mounted() {
     findBookByName(this.bookName).then( data => {
       console.log(data)
-      this.totalAmount = data.body.totalAmount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+      this.totalAmount = data.body.totalAmount.toLocaleString("ko-KR")
     })
   }
 }
