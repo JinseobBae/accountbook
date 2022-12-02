@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 export default [
-    {field: "category1", key: "category1", title: "대분류", align: "center", width: "10%"},
+    {field: "category1", key: "category1", title: "대분류", align: "center", width: "10%", style: "fontsize:30px;"},
     {field: "category2", key: "category2", title: "소분류", align: "center", width: "10%"},
     {field: "title", key: "title", title: "항목", align: "center", width: "30%"},
     {

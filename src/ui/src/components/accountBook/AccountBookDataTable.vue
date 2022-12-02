@@ -7,7 +7,8 @@
                      :page-index="pageIndex"
                      :page-size="pageSize"
                      @on-page-number-change="pageNumberChange"
-                     @on-page-size-change="pageSizeChange"/>
+                     @on-page-size-change="pageSizeChange"
+                     :layout="['total', 'prev', 'pager', 'next']"/>
     </div>
 
   </div>
@@ -107,13 +108,18 @@ export default {
   margin-top: 2vh;
 }
 
+.ve-table-container {
+  -webkit-text-size-adjust: none;
+}
+
 .ve-pagination .ve-pagination-li {
   /*min-width: 5vw !important;*/
-  font-size: 14px !important;
+  font-size: 1em !important;
   line-height: 4vh !important;
 }
 
 .ve-table-body-td {
+  -webkit-text-size-adjust: none;
   font-size: 0.7vw !important;
 }
 
@@ -136,5 +142,12 @@ export default {
   font-size: 16px;
   border: 1px solid #eee;
   border-top: 0;
+}
+
+@media (max-width: 768px) {
+  .ve-table-body-td {
+    -webkit-text-size-adjust: none;
+    font-size: 3vw !important;
+  }
 }
 </style>

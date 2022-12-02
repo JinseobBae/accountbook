@@ -1,18 +1,13 @@
 <template>
 <div id="total-chart-container">
   <div id="month-compare-chart-container">
-    <span>
-      <BarChart chart-id="mb" :chart-data="lastMonthCompareData" title="최근 6개월간 사용 총액"/>
-    </span>
-    <span>
-      <BarChart chart-id="mdb" :stack=true :chart-data="lastMonthCompareDataDetail" title="최근 6개월간 항목별 사용 총액"/>
-    </span>
-  </div>
-  <div>
-    asdfasdf
-  </div>
-  <div>
-    asdfasdf
+    <div>
+      <BarChart chart-id="mb" :chart-data="lastMonthCompareData" :styles=chartStyle title="최근 6개월간 사용 총액"/>
+    </div>
+    <div class="chart-border"/>
+    <div>
+      <BarChart chart-id="mdb" :stack=true :chart-data="lastMonthCompareDataDetail" :styles=chartStyle title="최근 6개월간 항목별 사용 총액"/>
+    </div>
   </div>
 </div>
 </template>
@@ -28,9 +23,28 @@ export default {
   data() {
     return{
       lastMonthCompareData: {},
-      lastMonthCompareDataDetail: {}
+      lastMonthCompareDataDetail: {},
+      chartStyle: {}
     }
   },
+
+  created() {
+    if(this.isMobileView()){
+      this.chartStyle = {
+        width: '90vw',
+        height: '55vh',
+        position: 'relative'
+      }
+    }else{
+      this.chartStyle = {
+        width: '50vw',
+        height: '55vh',
+        position: 'relative'
+      }
+    }
+
+  },
+
   mounted() {
     const searchForm = { accountBookName : "집" }
 
@@ -44,6 +58,16 @@ export default {
       this.lastMonthCompareDataDetail = genMonthlyBarCharDataDetail(data)
     })
   },
+
+  methods : {
+    isMobileView() {
+      if (screen.width <= 768) {
+        return true
+      } else {
+        return false
+      }
+    },
+  }
 }
 </script>
 
@@ -62,5 +86,17 @@ export default {
   justify-content: space-evenly;
 }
 
+@media (max-width: 768px)  {
+  #month-compare-chart-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-border {
+    margin: 5px;
+  }
+}
 
 </style>

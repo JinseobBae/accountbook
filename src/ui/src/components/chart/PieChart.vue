@@ -56,7 +56,7 @@ export default {
     styles: {
       type: Object,
       default: () => { return {
-        width: '20vw',
+        width: 'inherit',
         height: `300px`,
         position: 'relative'
       }}

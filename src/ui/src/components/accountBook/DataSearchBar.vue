@@ -139,5 +139,17 @@ export default {
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .data_search_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .data_search_container span{
+    margin-bottom: 0.5vh;
+  }
+}
+
 
 </style>

@@ -105,4 +105,12 @@ export default {
   #total_amount_statistic {
     font-size: 3vw;
   }
+
+  @media (max-width: 768px) {
+    .pie_chart_container {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
 </style>
