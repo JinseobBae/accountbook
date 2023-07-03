@@ -12,5 +12,9 @@ public interface StatisticRepository {
 
     List<TotalStatisticDto> findTotalByMonthDetail(ContentSearchDto contentSearchDto, AccountBook accountBook);
 
+    List<TotalStatisticDto> findTotalByMonthLifeDetail(ContentSearchDto contentSearchDto, AccountBook accountBook);
+
+    List<TotalStatisticDto> findTotalByMonthTaxDetail(ContentSearchDto contentSearchDto, AccountBook accountBook);
+
 
 }

@@ -20,6 +20,27 @@ const getLastMonthCompareDetail = (searchFormData) => {
     })
 }
 
+const getLastMonthCompareLifeDetail = (searchFormData) => {
+    return axios.get('statistic/with-last-month-life-detail', {
+        params : searchFormData
+    }).then( response => {
+        return response.data
+    }).catch( error => {
+        alert(error.response.data.message)
+    })
+}
+
+const getLastMonthCompareTaxDetail = (searchFormData) => {
+    return axios.get('statistic/with-last-month-tax-detail', {
+        params : searchFormData
+    }).then( response => {
+        return response.data
+    }).catch( error => {
+        alert(error.response.data.message)
+    })
+}
+
+
 export {
-    getLastMonthCompare, getLastMonthCompareDetail
+    getLastMonthCompare, getLastMonthCompareDetail, getLastMonthCompareLifeDetail, getLastMonthCompareTaxDetail
 }

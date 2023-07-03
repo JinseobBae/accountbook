@@ -30,7 +30,7 @@ public class TotalStatisticService {
                 .orElseThrow(() -> new RuntimeException("Accountbook not exist"));
 
         DateDto thisMonth = getDateInfo(LocalDate.now());
-        DateDto lastMonth = getDateInfo(LocalDate.now().minusMonths(6));
+        DateDto lastMonth = getDateInfo(LocalDate.now().minusMonths(5));
 
         contentSearchDto.setStartDate(lastMonth.getFirstDayAsString());
         contentSearchDto.setEndDate(thisMonth.getLastDayAsString());
@@ -46,13 +46,58 @@ public class TotalStatisticService {
                 .orElseThrow(() -> new RuntimeException("Accountbook not exist"));
 
         DateDto thisMonth = getDateInfo(LocalDate.now());
-        DateDto pastMonth = getDateInfo(LocalDate.now().minusMonths(6));
+        DateDto pastMonth = getDateInfo(LocalDate.now().minusMonths(5));
 
         contentSearchDto.setStartDate(pastMonth.getFirstDayAsString());
         contentSearchDto.setEndDate(thisMonth.getLastDayAsString());
 
         List<TotalStatisticDto> resultList = contentRepository.findTotalByMonthDetail(contentSearchDto, accountBook);
 
+        generateResult(resultList);
+
+        resultList.sort(Comparator.comparing(TotalStatisticDto::getLabel));
+
+        return resultList;
+    }
+
+    public List<TotalStatisticDto> compareTotalAmountWithLastMonthLifeDetail(ContentSearchDto contentSearchDto){
+        AccountBook accountBook = accountBookRepository.findByName(contentSearchDto.getAccountBookName())
+                .orElseThrow(() -> new RuntimeException("Accountbook not exist"));
+
+        DateDto thisMonth = getDateInfo(LocalDate.now());
+        DateDto pastMonth = getDateInfo(LocalDate.now().minusMonths(5));
+
+        contentSearchDto.setStartDate(pastMonth.getFirstDayAsString());
+        contentSearchDto.setEndDate(thisMonth.getLastDayAsString());
+
+        List<TotalStatisticDto> resultList = contentRepository.findTotalByMonthLifeDetail(contentSearchDto, accountBook);
+
+        generateResult(resultList);
+
+        return resultList;
+    }
+
+    public List<TotalStatisticDto> compareTotalAmountWithLastMonthTaxDetail(ContentSearchDto contentSearchDto){
+        AccountBook accountBook = accountBookRepository.findByName(contentSearchDto.getAccountBookName())
+                .orElseThrow(() -> new RuntimeException("Accountbook not exist"));
+
+        DateDto thisMonth = getDateInfo(LocalDate.now());
+        DateDto pastMonth = getDateInfo(LocalDate.now().minusMonths(5));
+
+        contentSearchDto.setStartDate(pastMonth.getFirstDayAsString());
+        contentSearchDto.setEndDate(thisMonth.getLastDayAsString());
+
+        List<TotalStatisticDto> resultList = contentRepository.findTotalByMonthTaxDetail(contentSearchDto, accountBook);
+
+        resultList.forEach(result -> result.setCategory1("B"));
+
+        generateResult(resultList);
+
+        return resultList;
+    }
+
+
+    private void generateResult(List<TotalStatisticDto> resultList) {
         resultList.forEach(result -> {
             CategoryDto category =
                     CategoryUtils.getMyCategory(CategoryUtils.generateKey("1", result.getCategory1(), result.getCategory2()));
@@ -62,9 +107,8 @@ public class TotalStatisticService {
         });
 
         resultList.sort(Comparator.comparing(TotalStatisticDto::getLabel));
-
-        return resultList;
     }
+
 
     private DateDto getDateInfo(LocalDate date){
         LocalDate firstDay = LocalDate.of(date.getYear(), date.getMonthValue(), 1);

@@ -1,6 +1,5 @@
 package myhome.accountbook.config;
 
-import lombok.extern.log4j.Log4j;
 import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.entity.Category;
 import myhome.accountbook.entity.CategoryRepository;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 @Component
 public class SimpleCategoryCache {
@@ -66,6 +63,10 @@ public class SimpleCategoryCache {
                     System.out.println(category2Name);
                     return new RuntimeException("존재하지 않는 카테고리입니다.");
                 });
+    }
+
+    public void refreshCategory() {
+        this.init();
     }
 }
 

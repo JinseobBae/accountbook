@@ -9,12 +9,21 @@
       <BarChart chart-id="mdb" :stack=true :chart-data="lastMonthCompareDataDetail" :styles=chartStyle title="최근 6개월간 항목별 사용 총액"/>
     </div>
   </div>
+  <div id="month-compare-chart-container2">
+    <div>
+      <BarChart chart-id="mdb2" :stack=true :chart-data="lastMonthCompareDataLifeDetail" :styles=chartStyle title="최근 6개월간 생활 총액"/>
+    </div>
+    <div class="chart-border"/>
+    <div>
+      <BarChart chart-id="mbd3" :stack=true :chart-data="lastMonthCompareDataTaxDetail" :styles=chartStyle title="최근 6개월간 항목별 공과금 총액"/>
+    </div>
+  </div>
 </div>
 </template>
 
 <script>
 import BarChart from "@/components/chart/BarChart";
-import { getLastMonthCompare, getLastMonthCompareDetail } from "@/api/TotalStatisticApi"
+import { getLastMonthCompare, getLastMonthCompareDetail, getLastMonthCompareLifeDetail, getLastMonthCompareTaxDetail } from "@/api/TotalStatisticApi"
 import { genMonthlyBarCharData, genMonthlyBarCharDataDetail } from "@/script/TotalStatisticScript"
 
 export default {
@@ -24,6 +33,8 @@ export default {
     return{
       lastMonthCompareData: {},
       lastMonthCompareDataDetail: {},
+      lastMonthCompareDataLifeDetail: {},
+      lastMonthCompareDataTaxDetail: {},
       chartStyle: {}
     }
   },
@@ -55,7 +66,17 @@ export default {
 
     getLastMonthCompareDetail(searchForm).then((response) => {
       const data = response.body;
-      this.lastMonthCompareDataDetail = genMonthlyBarCharDataDetail(data)
+      this.lastMonthCompareDataDetail = genMonthlyBarCharDataDetail(data, 'category1')
+    })
+
+    getLastMonthCompareLifeDetail(searchForm).then((response) => {
+      const data = response.body;
+      this.lastMonthCompareDataLifeDetail = genMonthlyBarCharDataDetail(data, 'category2')
+    })
+
+    getLastMonthCompareTaxDetail(searchForm).then((response) => {
+      const data = response.body;
+      this.lastMonthCompareDataTaxDetail = genMonthlyBarCharDataDetail(data, 'category2')
     })
   },
 
@@ -79,17 +100,17 @@ export default {
   align-items: center;
 }
 
-#month-compare-chart-container {
+#month-compare-chart-container, #month-compare-chart-container2 {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 98%;
   justify-content: space-evenly;
 }
 
 @media (max-width: 768px)  {
-  #month-compare-chart-container {
+  #month-compare-chart-container, #month-compare-chart-container2 {
     display: flex;
-    width: 100%;
+    width: 98%;
     flex-direction: column;
     align-items: center;
   }

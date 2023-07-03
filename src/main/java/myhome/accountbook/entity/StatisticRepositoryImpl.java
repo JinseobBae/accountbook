@@ -51,7 +51,7 @@ public class StatisticRepositoryImpl implements StatisticRepository{
 
         return jpaQueryFactory.select(Projections.fields(TotalStatisticDto.class,
                 content.category1,
-                content.category2,
+//                content.category2,
                 content.amount.sum().as("totalAmount"),
                 dateFormat.as("label"))
         )
@@ -61,9 +61,56 @@ public class StatisticRepositoryImpl implements StatisticRepository{
                 .where(content.realUseDt.between(LocalDate.parse(contentSearchDto.getStartDate()), LocalDate.parse(contentSearchDto.getEndDate())))
                 .groupBy(dateFormat)
                 .groupBy(content.category1)
+//                .groupBy(content.category2)
+                .orderBy(dateFormat.asc())
+                .fetch();
+
+    }
+
+    @Override
+    public List<TotalStatisticDto> findTotalByMonthLifeDetail(ContentSearchDto contentSearchDto, AccountBook accountBook) {
+        QContent content = QContent.content;
+
+        StringTemplate dateFormat = Expressions.stringTemplate("TO_CHAR({0}, '{1s}')", content.realUseDt, "YYYY-MM");
+
+        return jpaQueryFactory.select(Projections.fields(TotalStatisticDto.class,
+                content.category2,
+                content.amount.sum().as("totalAmount"),
+                dateFormat.as("label"))
+        )
+                .from(content)
+                .where(content.accountBook.eq(accountBook))
+                .where(content.type.eq("1"))
+                .where(content.category1.eq("A"))
+                .where(content.realUseDt.between(LocalDate.parse(contentSearchDto.getStartDate()), LocalDate.parse(contentSearchDto.getEndDate())))
+                .groupBy(dateFormat)
                 .groupBy(content.category2)
                 .orderBy(dateFormat.asc())
                 .fetch();
 
     }
+
+    @Override
+    public List<TotalStatisticDto> findTotalByMonthTaxDetail(ContentSearchDto contentSearchDto, AccountBook accountBook) {
+        QContent content = QContent.content;
+
+        StringTemplate dateFormat = Expressions.stringTemplate("TO_CHAR({0}, '{1s}')", content.realUseDt, "YYYY-MM");
+
+        return jpaQueryFactory.select(Projections.fields(TotalStatisticDto.class,
+                content.category2,
+                content.amount.sum().as("totalAmount"),
+                dateFormat.as("label"))
+        )
+                .from(content)
+                .where(content.accountBook.eq(accountBook))
+                .where(content.type.eq("1"))
+                .where(content.category1.eq("B"))
+                .where(content.realUseDt.between(LocalDate.parse(contentSearchDto.getStartDate()), LocalDate.parse(contentSearchDto.getEndDate())))
+                .groupBy(dateFormat)
+                .groupBy(content.category2)
+                .orderBy(dateFormat.asc())
+                .fetch();
+
+    }
+
 }

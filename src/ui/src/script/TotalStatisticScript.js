@@ -44,7 +44,7 @@ function genMonthlyBarCharData(data) {
 }
 
 
-function genMonthlyBarCharDataDetail(data) {
+function genMonthlyBarCharDataDetail(data, key) {
 
     const labels = []
     const dataSetArray = []
@@ -57,7 +57,7 @@ function genMonthlyBarCharDataDetail(data) {
         }
     })
 
-    const monthlyData = groupBy(data, 'category2')
+    const monthlyData = groupBy(data, key)
 
     console.log(monthlyData)
     console.log(labels)
