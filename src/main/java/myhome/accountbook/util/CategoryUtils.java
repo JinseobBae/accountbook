@@ -10,12 +10,12 @@ public class CategoryUtils {
         return SimpleCategoryCache.getInstance().getCategory(key);
     }
 
-    public static String generateKey(String key){
-        return generateKey(key, null, null);
+    public static String generateKey(String type){
+        return generateKey(type, null, null);
     }
 
-    public static String generateKey(String key, String category1){
-        return generateKey(key, category1, null);
+    public static String generateKey(String type, String category1){
+        return generateKey(type, category1, null);
     }
 
     public static String generateKey(String type, String category1, String category2){
