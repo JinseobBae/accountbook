@@ -36,6 +36,21 @@ const fetchNaviData= () => {
                 text: "통계",
                 path: "/statistic"
             },
+            {
+                type: "spacer",
+                text: "",
+                path: ""
+            },
+            {
+                type: "spacer",
+                text: "",
+                path: ""
+            },
+            {
+                type: "link",
+                text: "정산",
+                path: "/calculate"
+            },
         ],
     }
 

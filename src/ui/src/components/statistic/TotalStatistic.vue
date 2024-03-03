@@ -48,7 +48,7 @@ export default {
       }
     }else{
       this.chartStyle = {
-        width: '50vw',
+        width: '45vw',
         height: '55vh',
         position: 'relative'
       }
