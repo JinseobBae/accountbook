@@ -2,11 +2,10 @@ package myhome.accountbook.presentation;
 
 import lombok.RequiredArgsConstructor;
 import myhome.accountbook.dto.AccountBookDto;
+import myhome.accountbook.filter.AuthFree;
 import myhome.accountbook.service.AccountBookSearchService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import myhome.accountbook.util.AuthUtils;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/book")
@@ -16,8 +15,14 @@ public class AccountBookController {
     private final AccountBookSearchService accountBookSearchService;
 
     @GetMapping("account-book")
-    public AccountBookDto searchOneBook(@RequestParam String bookName){
+    public AccountBookDto searchOneBook(@RequestParam String bookName) {
         return accountBookSearchService.searchBook(bookName);
+    }
+
+    @PostMapping("/auth")
+    @AuthFree
+    public Boolean auth(@RequestBody String auth) {
+        return AuthUtils.doAuth(auth);
     }
 
 }

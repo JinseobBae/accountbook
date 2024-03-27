@@ -14,4 +14,21 @@ const findBookByName = (bookName) => {
 
 }
 
-export { findBookByName }
+const doAuth = (key) => {
+
+    return axios.post("book/auth",
+        key,
+        {
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        }
+    ).then( response => {
+        return response.data
+    }).catch( error => {
+        alert(error)
+    })
+
+}
+
+export { findBookByName, doAuth }
