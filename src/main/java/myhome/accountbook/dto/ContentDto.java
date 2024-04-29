@@ -45,6 +45,7 @@ public class ContentDto {
                 .title(this.title)
                 .realUseDt(this.realUseDt)
                 .type(this.type)
+                .accountBook(AccountBook.builder().id(1).build())
                 .build();
     }
 
