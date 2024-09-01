@@ -1,6 +1,7 @@
 package myhome.accountbook.excel;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import myhome.accountbook.config.SimpleCategoryCache;
 import myhome.accountbook.dto.CategoryDto;
 import myhome.accountbook.dto.ContentDto;
@@ -29,6 +30,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ExcelReadService {
 
     private final ContentRepository contentRepository;
@@ -52,6 +54,14 @@ public class ExcelReadService {
             for (rowNum = 1; rowNum < lastNum; rowNum++) {
                 XSSFRow row = sheet.getRow(rowNum);
 
+                if (row != null){
+                    String val = row.getCell(cellIndex).getStringCellValue();
+
+                    if ("".equals(val) || val == null){
+                        break;
+                    }
+                }
+
                 if (row != null) {
                     ContentDto contentDto = ContentDto.builder()
                             .realUseDt(stringToLocalDate(row.getCell(cellIndex++).getStringCellValue()))
@@ -65,11 +75,20 @@ public class ExcelReadService {
 
                     if (contentDto.getCategory1() == null) {
                         findCategory(contentDto);
+
+                        if(contentDto.getCategory1() == null || contentDto.getCategory1().equals("")){
+                            log.error("no category!! {}", contentDto);
+                        }
                     }
 
-                    CategoryDto categoryDto = categoryCache.getCategoryByName(contentDto.getType(), contentDto.getCategory1(), contentDto.getCategory2());
+                    try {
+                        CategoryDto categoryDto = categoryCache.getCategoryByName(contentDto.getType(), contentDto.getCategory1(), contentDto.getCategory2());
+                        contentDto.changeNameToCode(categoryDto.getType(), categoryDto.getCode(), categoryDto.getSubCode());
+                    }catch (Exception e) {
+                        log.info("error : {}", contentDto);
+                        throw e;
+                    }
 
-                    contentDto.changeNameToCode(categoryDto.getType(), categoryDto.getCode(), categoryDto.getSubCode());
 
                     list.add(contentDto);
                 }
@@ -112,15 +131,22 @@ public class ExcelReadService {
     }
 
     private String getOrNull(XSSFCell cell) {
-        return Optional.ofNullable(cell)
-                .map(XSSFCell::getStringCellValue)
-                .orElse(null);
+        if (cell == null) {
+            return null;
+        }
+
+        String val = cell.getStringCellValue();
+        if (!"".equals(val) && val != null) {
+            return val;
+        } else {
+            return null;
+        }
     }
 
     private void findCategory(ContentDto contentDto){
         String title = contentDto.getTitle() ;
 
-        if (title.contains("전기료")) {
+        if (title.contains("전기료") || title.contains("수신료")) {
             contentDto.setCategory1("공과금");
             contentDto.setCategory2("전기");
         } else if (title.contains("인터넷")) {
@@ -144,15 +170,18 @@ public class ExcelReadService {
         } else if (title.contains("성남시청")) {
             contentDto.setCategory1("차량");
             contentDto.setCategory2("주차비");
-        } else if (title.contains("홈플러스") || title.contains("이마트")) {
+        } else if (title.contains("홈플러스") || title.contains("이마트") || title.contains("롯데프레시")) {
             contentDto.setCategory1("생활");
             contentDto.setCategory2("마트/편의점/백화점");
-        } else if (title.contains("더마켓")) {
+        } else if (title.contains("더마켓") || title.contains("마켓컬리")) {
             contentDto.setCategory1("생활");
             contentDto.setCategory2("E-커머스");
         } else if (title.contains("차의과학대학교")) {
             contentDto.setCategory1("병원");
             contentDto.setCategory2("진료비");
+        } else if (title.contains("올리브영")) {
+            contentDto.setCategory1("생활");
+            contentDto.setCategory2("마트/편의점/백화점");
         }
     }
 }
